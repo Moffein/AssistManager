@@ -25,6 +25,13 @@ namespace AssistManager
         public delegate void HandleAssist(Assist assist, CharacterBody killerBody, DamageInfo damageInfo);
         public static HandleAssist HandleAssistActions;
 
+        public delegate void HandleAssistInventoryCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo);
+        public static HandleAssistInventoryCompatible HandleAssistInventoryCompatibleActions;
+
+
+        public delegate void HandleAssistCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, CharacterBody killerBody, DamageInfo damageInfo);
+        public static HandleAssistCompatible HandleAssistCompatibleActions;
+
 
         private List<Assist> pendingAssists = new List<Assist>();
 
@@ -206,10 +213,22 @@ namespace AssistManager
                     if (a.attackerBody && a.attackerBody.healthComponent && a.attackerBody.healthComponent.alive)
                     {
                         if (HandleAssistActions != null) HandleAssistActions.Invoke(a, killerBody, damageInfo);
+                        if (HandleAssistCompatibleActions != null) HandleAssistCompatibleActions.Invoke(a.attackerBody,
+                                                                   a.victimBody,
+                                                                   a.damageType,
+                                                                   a.moddedDamageTypes,
+                                                                   killerBody, damageInfo);
                         Inventory attackerInventory = a.attackerBody.inventory;
-                        if (attackerInventory && HandleAssistInventoryActions != null)
+                        if (attackerInventory)
                         {
-                            HandleAssistInventoryActions(a, attackerInventory, killerBody, damageInfo);
+                            if (HandleAssistInventoryActions != null) HandleAssistInventoryActions(a, attackerInventory, killerBody, damageInfo);
+                            if (HandleAssistInventoryCompatibleActions != null) HandleAssistInventoryCompatibleActions(a.attackerBody,
+                                                                   a.victimBody,
+                                                                   a.damageType,
+                                                                   a.moddedDamageTypes,
+                                                                   attackerInventory,
+                                                                   killerBody,
+                                                                   damageInfo);
                         }
                     }
                     pendingAssists.Remove(a);
@@ -220,10 +239,22 @@ namespace AssistManager
                     if (a.attackerBody && a.attackerBody.healthComponent && a.attackerBody.healthComponent.alive)
                     {
                         if (HandleAssistActions != null) HandleAssistActions.Invoke(a, killerBody, damageInfo);
+                        if (HandleAssistCompatibleActions != null) HandleAssistCompatibleActions.Invoke(a.attackerBody,
+                                                                   a.victimBody,
+                                                                   a.damageType,
+                                                                   a.moddedDamageTypes,
+                                                                   killerBody, damageInfo);
                         Inventory attackerInventory = a.attackerBody.inventory;
-                        if (attackerInventory && HandleAssistInventoryActions != null)
+                        if (attackerInventory)
                         {
-                            HandleAssistInventoryActions(a, attackerInventory, killerBody, damageInfo);
+                            if (HandleAssistInventoryActions != null) HandleAssistInventoryActions(a, attackerInventory, killerBody, damageInfo);
+                            if (HandleAssistInventoryCompatibleActions != null) HandleAssistInventoryCompatibleActions(a.attackerBody,
+                                                                   a.victimBody,
+                                                                   a.damageType,
+                                                                   a.moddedDamageTypes,
+                                                                   attackerInventory,
+                                                                   killerBody,
+                                                                   damageInfo);
                         }
                     }
                     pendingDirectAssists.Remove(a);

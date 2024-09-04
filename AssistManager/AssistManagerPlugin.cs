@@ -11,7 +11,7 @@ namespace AssistManager
     [BepInDependency(R2API.R2API.PluginGUID)]
     [BepInDependency(R2API.DamageAPI.PluginGUID)]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
-    [BepInPlugin("com.Moffein.AssistManager", "AssistManager", "1.0.0")]
+    [BepInPlugin("com.Moffein.AssistManager", "AssistManager", "1.1.0")]
     public class AssistManagerPlugin : BaseUnityPlugin
     {
         private void Awake()
