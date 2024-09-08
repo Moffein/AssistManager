@@ -21,14 +21,14 @@ namespace AssistManager.VanillaTweaks
         {
             base.ApplyChanges();
             On.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
-            AssistManager.HandleAssistActions += HandleBanditAssists;
+            AssistManager.HandleDirectAssistActions += HandleBanditAssists;
         }
 
         protected override void RemoveChanges()
         {
             base.RemoveChanges();
             On.RoR2.GlobalEventManager.ProcessHitEnemy -= GlobalEventManager_ProcessHitEnemy;
-            AssistManager.HandleAssistActions -= HandleBanditAssists;
+            AssistManager.HandleDirectAssistActions -= HandleBanditAssists;
         }
 
         private void GlobalEventManager_ProcessHitEnemy(On.RoR2.GlobalEventManager.orig_ProcessHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
