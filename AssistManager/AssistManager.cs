@@ -104,7 +104,6 @@ namespace AssistManager
 
                 if (attackerBody &&  victimBody && AssistManager.instance)
                 {
-                    AssistManager.instance.AddAssist(new Assist(attackerBody, victimBody, AssistManager.assistDuration));
                     AssistManager.instance.TriggerAssists(victimBody, attackerBody, damageReport.damageInfo);
                 }
             }
