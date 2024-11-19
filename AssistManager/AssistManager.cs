@@ -302,6 +302,8 @@ namespace AssistManager
                 this.damageType = damageType;
                 this.moddedDamageTypes = new HashSet<R2API.DamageAPI.ModdedDamageType>();
             }
+
+            public Assist() { }
         }
     }
 }
