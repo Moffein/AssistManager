@@ -97,7 +97,7 @@ namespace AssistManager
         {
             orig(self, damageReport);
 
-            if (NetworkServer.active && damageReport.attackerMaster)
+            if (NetworkServer.active)
             {
                 CharacterBody attackerBody = damageReport.attackerBody;
                 CharacterBody victimBody = damageReport.victimBody;
