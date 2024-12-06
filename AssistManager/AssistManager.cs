@@ -102,7 +102,7 @@ namespace AssistManager
                 CharacterBody attackerBody = damageReport.attackerBody;
                 CharacterBody victimBody = damageReport.victimBody;
 
-                if (attackerBody &&  victimBody && AssistManager.instance)
+                if (attackerBody && victimBody && AssistManager.instance)
                 {
                     AssistManager.instance.TriggerAssists(victimBody, attackerBody, damageReport.damageInfo);
                 }
