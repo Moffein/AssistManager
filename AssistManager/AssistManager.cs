@@ -25,11 +25,11 @@ namespace AssistManager
         public delegate void HandleAssist(Assist assist, CharacterBody killerBody, DamageInfo damageInfo);
         public static HandleAssist HandleAssistActions;
 
-        public delegate void HandleAssistInventoryCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo);
+        public delegate void HandleAssistInventoryCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, DamageTypeCombo? assistDamageTypeCombo, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo);
         public static HandleAssistInventoryCompatible HandleAssistInventoryCompatibleActions;
 
 
-        public delegate void HandleAssistCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, CharacterBody killerBody, DamageInfo damageInfo);
+        public delegate void HandleAssistCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, DamageTypeCombo? assistDamageTypeCombo, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, CharacterBody killerBody, DamageInfo damageInfo);
         public static HandleAssistCompatible HandleAssistCompatibleActions;
 
         public delegate void HandleDirectAssistInventory(Assist assist, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo);
@@ -39,11 +39,11 @@ namespace AssistManager
         public delegate void HandleDirectAssist(Assist assist, CharacterBody killerBody, DamageInfo damageInfo);
         public static HandleDirectAssist HandleDirectAssistActions;
 
-        public delegate void HandleDirectAssistInventoryCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo);
+        public delegate void HandleDirectAssistInventoryCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, DamageTypeCombo? assistDamageTypeCombo, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo);
         public static HandleDirectAssistInventoryCompatible HandleDirectAssistInventoryCompatibleActions;
 
 
-        public delegate void HandleDirectAssistCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, CharacterBody killerBody, DamageInfo damageInfo);
+        public delegate void HandleDirectAssistCompatible(CharacterBody attackerBody, CharacterBody victimBody, DamageType? assistDamageType, DamageTypeCombo? assistDamageTypeCombo, HashSet<R2API.DamageAPI.ModdedDamageType> assistModdedDamageTypes, CharacterBody killerBody, DamageInfo damageInfo);
         public static HandleDirectAssistCompatible HandleDirectAssistCompatibleActions;
 
         private List<Assist> pendingAssists = new List<Assist>();
@@ -158,7 +158,8 @@ namespace AssistManager
                         a.timer = newAssist.timer;
                     }
 
-                    a.damageType = a.damageType | newAssist.damageType;
+                    a.damageTypeCombo |= newAssist.damageTypeCombo; //How does this operator interact with DamageSource?
+                    a.damageType |= newAssist.damageType;
                     a.moddedDamageTypes.UnionWith(newAssist.moddedDamageTypes);
                     break;
                 }
@@ -179,6 +180,7 @@ namespace AssistManager
                 if (a.attackerBody == newAssist.attackerBody
                     && a.victimBody == newAssist.victimBody
                     && a.damageType == newAssist.damageType
+                    && a.damageTypeCombo.Equals(newAssist.damageTypeCombo)
                     && a.moddedDamageTypes.SetEquals(newAssist.moddedDamageTypes))
                 {
                     foundAssist = true;
@@ -226,6 +228,7 @@ namespace AssistManager
                         HandleAssistCompatibleActions?.Invoke(a.attackerBody,
                                                                    a.victimBody,
                                                                    a.damageType,
+                                                                   a.damageTypeCombo,
                                                                    a.moddedDamageTypes,
                                                                    killerBody, damageInfo);
                         Inventory attackerInventory = a.attackerBody.inventory;
@@ -235,6 +238,7 @@ namespace AssistManager
                             HandleAssistInventoryCompatibleActions?.Invoke(a.attackerBody,
                                                                    a.victimBody,
                                                                    a.damageType,
+                                                                   a.damageTypeCombo,
                                                                    a.moddedDamageTypes,
                                                                    attackerInventory,
                                                                    killerBody,
@@ -245,13 +249,13 @@ namespace AssistManager
                 }
                 foreach (Assist a in toRemoveDirect)
                 {
-
                     if (a.attackerBody && a.attackerBody.healthComponent && a.attackerBody.healthComponent.alive)
                     {
                         HandleDirectAssistActions?.Invoke(a, killerBody, damageInfo);
                         HandleDirectAssistCompatibleActions?.Invoke(a.attackerBody,
                                                                    a.victimBody,
                                                                    a.damageType,
+                                                                   a.damageTypeCombo,
                                                                    a.moddedDamageTypes,
                                                                    killerBody, damageInfo);
                         Inventory attackerInventory = a.attackerBody.inventory;
@@ -261,6 +265,7 @@ namespace AssistManager
                             HandleDirectAssistInventoryCompatibleActions?.Invoke(a.attackerBody,
                                                                    a.victimBody,
                                                                    a.damageType,
+                                                                   a.damageTypeCombo,
                                                                    a.moddedDamageTypes,
                                                                    attackerInventory,
                                                                    killerBody,
@@ -281,6 +286,9 @@ namespace AssistManager
             [Tooltip("Use this if you want to save information about the hit that triggered the assist.")]
             public DamageType? damageType;
 
+            [Tooltip("Use this if you want to save information about the hit that triggered the assist. Allows for more information compared to DamageType.")]
+            public DamageTypeCombo? damageTypeCombo;
+
             //This needs to be a hashsset since it can't be combined like normal DamageTypes can.
             [Tooltip("Use this if you want to save information about the hit that triggered the assist.")]
             public HashSet<R2API.DamageAPI.ModdedDamageType> moddedDamageTypes;
@@ -291,6 +299,7 @@ namespace AssistManager
                 this.victimBody = victimBody;
                 this.timer = timer;
                 this.damageType = null;
+                this.damageTypeCombo = null;
                 this.moddedDamageTypes = new HashSet<R2API.DamageAPI.ModdedDamageType>();
             }
 
@@ -300,7 +309,31 @@ namespace AssistManager
                 this.victimBody = victimBody;
                 this.timer = timer;
                 this.damageType = damageType;
+                this.damageTypeCombo = null;
                 this.moddedDamageTypes = new HashSet<R2API.DamageAPI.ModdedDamageType>();
+            }
+
+            public Assist(CharacterBody attackerBody, CharacterBody victimBody, float timer, DamageTypeCombo damageTypeCombo)
+            {
+                this.attackerBody = attackerBody;
+                this.victimBody = victimBody;
+                this.timer = timer;
+                this.damageType = null;
+                this.damageTypeCombo = damageTypeCombo;
+                this.moddedDamageTypes = new HashSet<R2API.DamageAPI.ModdedDamageType>();
+            }
+
+            public Assist(CharacterBody attackerBody, CharacterBody victimBody, float timer, DamageAPI.ModdedDamageType moddedDamageType)
+            {
+                this.attackerBody = attackerBody;
+                this.victimBody = victimBody;
+                this.timer = timer;
+                this.damageType = null;
+                this.damageTypeCombo = null;
+                this.moddedDamageTypes = new HashSet<R2API.DamageAPI.ModdedDamageType>
+                {
+                    moddedDamageType
+                };
             }
 
             public Assist() { }
