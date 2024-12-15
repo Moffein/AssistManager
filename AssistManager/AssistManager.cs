@@ -1,10 +1,7 @@
 ﻿using R2API;
 using RoR2;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.Networking;
 
 namespace AssistManager
