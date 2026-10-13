@@ -26,7 +26,7 @@ namespace AssistManager.VanillaTweaks
         {
             if (assist.attackerBody == killerBody || !assist.victimBody.isElite) return;
 
-            int bsCount = attackerInventory.GetItemCount(RoR2Content.Items.KillEliteFrenzy);
+            int bsCount = attackerInventory.GetItemCountEffective(RoR2Content.Items.KillEliteFrenzy);
             if (bsCount > 0)
             {
                 assist.attackerBody.AddTimedBuff(RoR2Content.Buffs.NoCooldowns, bsCount * 4f);

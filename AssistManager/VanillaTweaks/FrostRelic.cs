@@ -26,7 +26,7 @@ namespace AssistManager.VanillaTweaks
         {
             if (assist.attackerBody == killerBody) return;
 
-            int itemCount = attackerInventory.GetItemCount(RoR2Content.Items.Icicle);
+            int itemCount = attackerInventory.GetItemCountEffective(RoR2Content.Items.Icicle);
             if (itemCount <= 0) return;
 
             RoR2.Items.IcicleBodyBehavior ib = assist.attackerBody.GetComponent<RoR2.Items.IcicleBodyBehavior>();

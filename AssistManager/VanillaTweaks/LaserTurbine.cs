@@ -25,7 +25,7 @@ namespace AssistManager.VanillaTweaks
         private void OnKillEffect(Assist assist, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo)
         {
             if (assist.attackerBody == killerBody) return;
-            int itemCount = attackerInventory.GetItemCount(RoR2Content.Items.LaserTurbine);
+            int itemCount = attackerInventory.GetItemCountEffective(RoR2Content.Items.LaserTurbine);
             if (itemCount > 0)
             {
                 assist.attackerBody.AddTimedBuff(RoR2Content.Buffs.LaserTurbineKillCharge, EntityStates.LaserTurbine.RechargeState.killChargeDuration, EntityStates.LaserTurbine.RechargeState.killChargesRequired);

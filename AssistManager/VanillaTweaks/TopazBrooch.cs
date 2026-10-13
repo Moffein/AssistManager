@@ -26,7 +26,7 @@ namespace AssistManager.VanillaTweaks
         {
             if (assist.attackerBody == killerBody) return;
 
-            int itemCount = attackerInventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
+            int itemCount = attackerInventory.GetItemCountEffective(RoR2Content.Items.BarrierOnKill);
             if (itemCount > 0)
             {
                 assist.attackerBody.healthComponent.AddBarrier(15f * itemCount);

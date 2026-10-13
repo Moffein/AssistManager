@@ -26,7 +26,7 @@ namespace AssistManager.VanillaTweaks
         {
             if (assist.attackerBody == killerBody || !assist.victimBody.isElite) return;
 
-            int hhCount = attackerInventory.GetItemCount(RoR2Content.Items.HeadHunter);
+            int hhCount = attackerInventory.GetItemCountEffective(RoR2Content.Items.HeadHunter);
             if (hhCount <= 0) return;
 
             float duration = 3f + 5f * hhCount;

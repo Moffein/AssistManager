@@ -31,7 +31,7 @@ namespace AssistManager.VanillaTweaks
             //Let Vanilla handle effect if you are killer.
             if (assist.attackerBody == killerBody) return;
 
-            int itemCount = attackerInventory.GetItemCount(RoR2Content.Items.Infusion);
+            int itemCount = attackerInventory.GetItemCountEffective(RoR2Content.Items.Infusion);
             if (itemCount <= 0) return;
 
             int maxOrbs = itemCount * 100;

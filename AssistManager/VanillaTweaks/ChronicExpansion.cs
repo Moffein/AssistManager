@@ -26,7 +26,7 @@ namespace AssistManager.VanillaTweaks
         private void OnKillEffect(Assist assist, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo)
         {
             if (assist.attackerBody == killerBody) return;
-            if (attackerInventory.GetItemCount(DLC2Content.Items.IncreaseDamageOnMultiKill) > 0) assist.attackerBody.AddIncreasedDamageMultiKillTime();
+            if (attackerInventory.GetItemCountEffective(DLC2Content.Items.IncreaseDamageOnMultiKill) > 0) assist.attackerBody.AddIncreasedDamageMultiKillTime();
         }
     }
 }

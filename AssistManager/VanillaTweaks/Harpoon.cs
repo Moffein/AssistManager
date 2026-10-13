@@ -27,7 +27,7 @@ namespace AssistManager.VanillaTweaks
         {
             if (assist.attackerBody == killerBody) return;
 
-            int itemCount = attackerInventory.GetItemCount(DLC1Content.Items.MoveSpeedOnKill);
+            int itemCount = attackerInventory.GetItemCountEffective(DLC1Content.Items.MoveSpeedOnKill);
             if (itemCount <= 0) return;
 
             CharacterBody attackerBody = assist.attackerBody;

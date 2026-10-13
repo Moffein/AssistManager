@@ -25,7 +25,7 @@ namespace AssistManager.VanillaTweaks
         private void OnKillEffect(Assist assist, Inventory attackerInventory, CharacterBody killerBody, DamageInfo damageInfo)
         {
             if (assist.attackerBody == killerBody) return;
-            int itemCount = attackerInventory.GetItemCount(RoR2Content.Items.Talisman);
+            int itemCount = attackerInventory.GetItemCountEffective(RoR2Content.Items.Talisman);
             if (itemCount > 0)
             {
                 attackerInventory.DeductActiveEquipmentCooldown(2f + itemCount * 2f);
